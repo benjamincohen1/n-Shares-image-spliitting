@@ -5,6 +5,7 @@ import sys
 WHITE = 255
 BLACK = 0
 def split2shares(img, n):
+	
 	im = Image.open(img)
 	imPixels = im.load()
 
@@ -46,14 +47,16 @@ def split2shares(img, n):
 	        	else:
 	        		pixels3[i,j] = (WHITE, WHITE, WHITE)
 
-	fName = str(img) + "_share" + str(n) + ".png"
+	fName = "share" + str(n) + ".png"
 	im3.save(fName)
 
-	fName2 = str(img) + "_share" + str(n-1) + ".png"
+	fName2 = "share" + str(n-1) + ".png"
 	im2.save(fName2)
-	
+
 	if n > 2:
+		fName2 = "share" + str(n-1) + ".png"
 		split2shares(fName2, n-1)
+
 
 
 	# im2.save("%s_share1.png" % (img))
@@ -61,14 +64,14 @@ def split2shares(img, n):
 
 	# return im2, im3
 
-def superimpose(numImages, name):
-
-	fName = name + "_share" + str(1) + ".png"
+def superimpose(numImages, prob=False):
+	name = None
+	fName = "share" + str(1) + ".png"
 
 	i1 = Image.open(fName)
 	size = i1.size
 	
-	p = [Image.open(name + "_share" + str(n) + ".png").load() for n in range(1,numImages + 1)]
+	p = [Image.open("share" + str(n) + ".png").load() for n in range(1,numImages + 1)]
 
 	iNew = Image.open(fName)
 	iNewPixels = iNew.load()
@@ -78,7 +81,11 @@ def superimpose(numImages, name):
 	    for j in range(size[1]):
 	    	# print i1[i,j]
 	    	tmp = [1 for x in p if x[i,j] == (BLACK, BLACK, BLACK)]
-	    	if tmp != []:
+	    	if prob:
+	    		cond = len(tmp) > numImages//4
+	    	else:
+	    		cond = len(tmp) != 0
+	    	if cond:
 	    		iNewPixels[i,j] = (BLACK, BLACK, BLACK)
 	    	else:
 				iNewPixels[i,j] = (WHITE, WHITE, WHITE)
@@ -99,7 +106,8 @@ def main():
 	"""
 
 	if len(sys.argv) == 1:
-		print "Usage: python nshares.py 'image to encrypt' [number of shares] \n Defaults to 2 shares."
+		print """Usage: python nshares.py 'image to encrypt' [number of shares]
+			  \nDefaults to 2 shares.\nUse the -p flag to turn on probabilistic superimposing"""
 	elif len(sys.argv) == 2:
 		#Assume they only gave us an input image.
 		shares = 2
@@ -111,10 +119,12 @@ def main():
 		shares = int(sys.argv[2])
 		if shares < 2:
 			print "Must have more than two shares"
-			return
 		split2shares(sys.argv[1], shares)
-		# str1, str2 = "%s_share1.png" % (sys.argv[1]), "%s_share2.png" % (sys.argv[1])
-		superimpose(shares, sys.argv[1])
+		if ('-p' in sys.argv or '-P' in sys.argv):
+			superimpose(shares, True)
+		else:
+			superimpose(shares)
+
 
 		
 if __name__ == "__main__":
