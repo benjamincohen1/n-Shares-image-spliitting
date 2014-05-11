@@ -24,6 +24,15 @@ def apply_key(pixel, key):
 	b = (key[2][0]*pixel[2] + key[2][1]) % 256
 	return (r, g, b)
 
+
+def extended_euclidian(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
+
+
 def main():
 	if len(sys.argv) < 3:
 		print "Usage: python caesar.py 'image' r-multiplier r-shift [g-m g-s b-m b-s]\n"
@@ -39,5 +48,6 @@ def main():
 				(int(sys.argv[6]), int(sys.argv[7]))]
 	img = affine(sys.argv[1], key)	
 	img.show()
+
 
 main()

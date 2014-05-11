@@ -1,7 +1,5 @@
 from PIL import Image
 import random
-import sys
-
 WHITE = 255
 BLACK = 0
 def split2shares(img, n):
@@ -46,31 +44,32 @@ def split2shares(img, n):
 	        	else:
 	        		pixels3[i,j] = (WHITE, WHITE, WHITE)
 
-	fName = str(img) + "_share" + str(n) + ".png"
+	fName = 'encrypted-' + str(n) + '.png'
 	im3.save(fName)
 
-	fName2 = str(img) + "_share" + str(n-1) + ".png"
+	fName2 = 'encrypted-' + str(n-1) + '.png'
 	im2.save(fName2)
 	
 	if n > 2:
 		split2shares(fName2, n-1)
+	# else:
+		# shares.append(im2)
+	# im.show()
+	# im2.save("rand1.png")
+	# im3.save("rand2.png")
+
+	# return shares
 
 
-	# im2.save("%s_share1.png" % (img))
-	# im3.save("%s_share2.png" % (img))
 
-	# return im2, im3
+def superimpose(numImages):
 
-def superimpose(numImages, name):
-
-	fName = name + "_share" + str(1) + ".png"
-
-	i1 = Image.open(fName)
+	i1 = Image.open('encrypted-' + str(1) + '.png')
 	size = i1.size
 	
-	p = [Image.open(name + "_share" + str(n) + ".png").load() for n in range(1,numImages + 1)]
+	p = [Image.open('encrypted-' + str(n) + '.png').load() for n in range(1,numImages + 1)]
 
-	iNew = Image.open(fName)
+	iNew = Image.open('encrypted-' + str(1) + '.png')
 	iNewPixels = iNew.load()
 
 
@@ -82,40 +81,19 @@ def superimpose(numImages, name):
 	    		iNewPixels[i,j] = (BLACK, BLACK, BLACK)
 	    	else:
 				iNewPixels[i,j] = (WHITE, WHITE, WHITE)
-
-	if name is None:
-		iNew.save('out.png')
-	else:
-		iNew.save('%s_out.png' % (name))
 	iNew.show()
+	iNew.save('out.png')
 	return iNew
 
 
-
 def main():
-	"""
-	i1, i2 = split2shares("test.jpg")
-	iNew = superimpose("rand1.png", "rand2.png")
-	"""
+	n = 5
 
-	if len(sys.argv) == 1:
-		print "Usage: python nshares.py 'image to encrypt' [number of shares] \n Defaults to 2 shares."
-	elif len(sys.argv) == 2:
-		#Assume they only gave us an input image.
-		shares = 2
-		split2shares(sys.argv[1], shares)
-		# str1, str2 = "%s_share1.png" % (sys.argv[1]), "%s_share2.png" % (sys.argv[1])
-		superimpose(shares, sys.argv[1])
-	elif len(sys.argv) > 2:
-		#image and number of shares
-		shares = int(sys.argv[2])
-		if shares < 2:
-			print "Must have more than two shares"
-			return
-		split2shares(sys.argv[1], shares)
-		# str1, str2 = "%s_share1.png" % (sys.argv[1]), "%s_share2.png" % (sys.argv[1])
-		superimpose(shares, sys.argv[1])
+	split2shares("test.jpg", n)
 
-		
+
+	iNew = superimpose(n)
+
+	# iNew.show()
 if __name__ == "__main__":
 	main()
