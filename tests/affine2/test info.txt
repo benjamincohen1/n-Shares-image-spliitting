@@ -1,0 +1,6 @@
+Encrypted with the affine cipher with key [(107, 60), (119, 20), (71, 19)].
+sunset.jpg is the original image
+encrypted.png is the result of the program
+deaffine.py produced the decrypted image, which is of course the same as the original.
+
+This image set shows off how easy it is to perform pattern analysis on encrypted images.  Since most of the image is nearly the same shade of orange, the output image has bands of similar colors.  You could probably guess it's a sunset.

@@ -1,0 +1,3 @@
+Encrypted with a key of 170.  Decrypted by running caesar.py with a key of -170.  As with all images encrypted with the caesar cipher, patterns are not affected and the image is easily recognizable.
+
+This image set in particular is notable because the key combined with this image produces an encrypted image that could be easily mistaken as correct.

@@ -1,0 +1,4 @@
+Encrypted with the affine cipher with key [(107, 60), (119, 20), (71, 19)].
+bridge.jpg is the original image
+encrypted.png is the result of the program
+deaffine.py produced the decrypted image, which is of course the same as the original.
