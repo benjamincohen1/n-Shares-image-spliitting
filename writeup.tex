@@ -26,7 +26,7 @@ Also included are programs to run the Caesar and Affine ciphers on images.  Thes
 \section*{Included Files}
 A few things are included with this submission.  First, there is this report.  Second, we have our implementation, n-shares.py. This requires the python imaging library (PIL) be installed.  PIL can be installed via pip, the python package manager.  The package is named "Pillow".  To see a usage message, simply run "python nshares.py".  The usage will be explained.  Also included in the "/tests" directory is a couple of subfolders, each containing a test image, it's shares, the the ourput.  Each subfolder also contains a "test.txt" briefly explaining the test.  
 
-The file caesar.py runs the Caesar cipher.  The file affine.py encrypts images with the Affine cipher, and the file deaffine.py decrypts them.  Run these files without arguments to get a usage message.
+The file caesar.py runs the Caesar cipher.  The file affine.py encrypts images with the Affine cipher, and the file deaffine.py decrypts them.  Run these files without arguments to get a usage message.   The Affine cipher can only be reversed if you use a key such that $gcd(k, 256) = 1$.  A list of these keys is provided.
 
 There is one known bug involving the Affine/Caesar programs.  In most cases, they work fine.  However, one particular image we tested is not able to be decrypted.  This may be related to image format.
 \section*{Future Work}
